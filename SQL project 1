@@ -1,0 +1,198 @@
+-- difference in sql,mysql,sql workbench
+-- difference in data,info,database
+-- different commands in sql(5)
+-- ddl commands(main 4)
+-- ddl commands for database(4)
+create database db4;
+create database db5;
+show databases;
+drop database db5;
+use db4;
+-- datatypes in sql
+-- ddl comands for table(6)
+show tables;
+create table emp(emp_id varchar(20),EmpName varchar(20),location char(10));
+desc emp;
+create table emp1(emp_id varchar(20),EmpName varchar(20),location char(10));
+drop table emp1;
+create table emp2(emp_id varchar(20),EmpName varchar(20),location char(10));
+-- truncate 
+alter table emp2 rename to emp1;
+-- ddl commands for column(6)
+desc emp1;
+alter table emp1 add column salary float;
+alter table emp1 add column index1 int first;
+alter table emp1 add column contact int after location;
+alter table emp1 add column cont int after location;
+alter table emp1 drop column cont;
+alter table emp1 rename column location to adress;
+alter table emp1 modify column salary double;
+-- constraints(6)
+create table student1(roll_no int primary key,stud_name char(20) not null,contact_no int unique,location varchar(30) default("pune"),age int check(age>18));
+desc student1;
+create table course(course_id int,course_name varchar(20),roll_id int,foreign key course(roll_id) references student1(roll_no));
+desc course;
+-- dql command(basic)
+select * from student1;
+-- operators(8)
+-- dml commands(only on row/records)
+insert into student1(roll_no,stud_name,contact_no,location,age) values(1,"amruta",1234567891,"delhi",19);
+insert into student1(roll_no,stud_name,contact_no,location,age) values(7,"lata",12399991,"delhi",29),(6,"divyani",98654321,"bhopal",25),(9,"aeshita",89765321,default,25);
+insert into student1(roll_no,stud_name,location) value(20,"deepak",default),(14,"yash","nagour");
+update student1 set location="india" where location="bhopal";
+update student1 set location ="india";
+delete from student1 where age<20;
+-- dql command(with variations)
+use db1;
+-- with comparision op.
+select * from emp_data;
+select * from new_emp;
+select * from emp_data where salary >100000;
+select * from emp_data where salary >=100000;
+select * from emp_data where salary <100000;
+select * from emp_data where salary <=100000;
+select * from emp_data where salary <>100000;
+select * from emp_data where salary =117642;
+-- with membership op.
+select * from emp_data where loc in ("chicago","dallas");
+select * from emp_data where loc = "dallas";
+select * from emp_data where loc not in ("new york","dallas");
+select * from emp_data where loc <> "dallas";
+-- with logical op.alter
+select * from emp_data where loc="dallas" and dept_id=20;
+select * from emp_data where dept_id=30 or gender="F";
+-- with is null is not null op.
+select * from emp_data where mgr_id is null;
+select * from emp_data where mgr_id is not null;
+-- with range op.
+select * from emp_data where salary between 50000 and 100000;
+-- case op.
+/* select <cn>,
+case
+when condition then " "
+when condition then " "
+when condition then " " 
+end
+as <"newcn">
+from <tn>; */
+select Salary,
+case
+when salary<75000 then "low"
+when salary>75000 and salary<100000 then "medium"
+when salary>100000 then "high"
+end
+as "income_category"
+from emp_data;
+-- like operator
+select * from emp_data where fname like "d%";
+select * from emp_data where fname like "%a";
+select * from emp_data where fname like "b%" and lname like "r%";
+select * from emp_data where fname like "b%n";
+select * from emp_data where fname like "%_____%"; -- minimum 5 char
+select * from emp_data where fname like "_____"; -- only 5 char
+select * from emp_data where fname like "_sn__%"; 
+select * from emp_data where fname like "%an%";
+select * from emp_data where fname like "a%" or fname like "l%";
+select * from emp_data where fname like "p%" and lname like "%y";
+-- built in functions(4)
+    -- string functions(6)
+			-- concat()
+            select concat(fname," ",lname) as fullname from emp_data;
+            -- upper()
+            select upper(fname) from emp_data;
+            -- lower()
+            select lower(fname) from emp_data;
+            -- replace()
+            select replace(fname,"o","+") from emp_data;
+            -- length()
+            select length(fname) from emp_data;
+            -- substr()
+            select substr("have a nice day",6,10);
+	-- math function(5)
+			-- pow(number,power)
+            select pow(5,6);
+            -- sqrt(number)
+            select sqrt(36);
+            -- abs(number)
+            select abs(-100.25);
+            -- floor(number)
+            select floor(13.5);
+            -- ceil(number)
+            select ceil(13.5);
+	-- data function(5)
+			-- now()
+            select now();
+            -- curdate()
+            select curdate();
+            -- curtime()
+            select curtime();
+            -- datediff()
+            select datediff("2000-01-01","2020-01-01")/365;
+            -- year()
+            select year("2024-04-11");
+            select month("2024-04-11");
+            select day("2024-04-11");
+	-- aggregate functio(5)
+			-- max()
+            select max(salary) from emp_data;
+			-- min()
+            select min(salary) from emp_data;
+            -- sum()
+            select sum(salary) from emp_data;
+            -- avg()
+            select avg(salary) from emp_data;
+            -- count()
+            select count(*) from emp_data;
+-- clauses(where done in above queries,order by,distinct,limit,group by, having)
+	-- order by clause
+    select * from emp_data order by salary; (by default asc)
+    select * from emp_data where loc= "dallas" order by salary desc;
+    select * from emp_data order by loc, gender desc; (asc and desc when required in a query desc goes at last)
+    select * from emp_data order by loc desc, gender desc;
+    -- distinct clause
+    select distinct dept_id from emp_data;
+    select distinct fname from emp_data;
+    -- limit clause(offset,rows_skipped)
+    select * from emp_data limit 0,10;
+    select * from emp_data limit 4,1;
+    select distinct salary from emp_data order by salary desc limit 1,1;
+    -- group by clause
+    select loc,count(*) from emp_data group by loc;
+    select dept_id, max(salary), min(salary),sum(salary) from emp_data group by dept_id;
+    select loc,gender,count(*) from emp_data group by loc,gender;
+    select loc,max(salary),min(salary) from emp_data group by loc;
+    select dept_id,count(*) from emp_data where salary>100000 group by dept_id order by count(*);
+    select loc,count(*) from emp_data where salary >= 50000 group by loc;
+    select loc,count(*) from emp_data where salary >= 50000 group by loc order by count(*) desc;
+    select loc,count(*) from emp_data where salary >=50000 group by loc order by loc;
+    -- having clause
+    select dept_id,count(*) from emp_data where salary > 100000 group by dept_id having count(*)>=25  order by count(*);
+    -- difference between where and having clause
+          -- where applied before group by and do row level filtring as per condition
+          -- having applied after group by and group done on the basis of similarities between all unique values from colunm
+    
+    
+
+
+-- alias(as)(temprory)
+select fname as fn from emp_data;
+select e.fname, e.salary from emp_data as e;
+-- subquery
+create table new_employee(select fname,lname from emp_data);
+select * from new_employee; -- new table with copied columns
+create table copy_table(select * from emp_data);
+select * from copy_table;  -- entire table copied
+select max(salary) from emp_data where salary<(select max(salary) from emp_data); -- nth highest salary
+
+-- joinss
+use db1;
+-- (4 main inner,outer, cross , self)
+-- outer(left outer join,right outer join, full join)
+
+
+-- full join(retrive all recoreds from table 1 and table2)(but donot work in sql as sql cannot identify the word full)
+select * from emp_data;
+select * from new_emp;
+select * from emp_data as e full join new_emp as n on e.loc= n.loc;
+
+
